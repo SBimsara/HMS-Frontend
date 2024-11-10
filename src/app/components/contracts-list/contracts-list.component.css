@@ -1,0 +1,13 @@
+.mat-table {
+  width: 50%;
+  margin-top: 20px;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}

@@ -1,0 +1,124 @@
+<div class="center-text">
+
+</div>
+
+<div class="container text-center">
+    <div class="search-contracts-form m-3 p-4">
+
+        <form action=""[formGroup]="searchContractsForm">
+            <div class="row mb-2">
+                <div class="row col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Choose the Check In Date</mat-label>
+                        <input formControlName="checkInDate" matInput [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 ">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Number of Nights</mat-label>
+                        <input matInput formControlName="noOfNights" placeholder="" type="number" min="1">
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div formArrayName="requiredRooms" *ngFor="let requiredRoom of requiredRooms.controls; let i = index">
+                <div [formGroupName]="i"class="row mb-2">
+                    
+                    <div class="col-md-5">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Rooms Required</mat-label>
+                          <input formControlName="roomsRequired" matInput type="number" min="1" placeholder="">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Adults Per Room</mat-label>
+                          <input formControlName="adultsPerRoom" matInput type="number" min="1" placeholder="">
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Price when update is not active -->
+
+                    <div class="col-md-2">
+                        <button mat-icon-button color="warn" (click)="removeRequiredRoom(i)">
+                            <mat-icon>
+                                delete
+                            </mat-icon>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="row text-end">
+                <div class="col-12">
+                    <button mat-raised-button class="custom-color-button" (click)="addRequiredRoom()">Add Required Room</button>
+                </div>
+            </div>
+        
+              <!-- Add Required Room Button -->
+              
+            
+            <div class="row">
+                <div class="col md-12 text-center mt-2">
+                    <button mat-raised-button color="primary" (click)="search()">SEARCH</button>
+            </div>
+                
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<div class="container" *ngFor="let contracts of searchResults">
+    <div *ngFor="let contract of contracts">
+        <div>
+            <h3>{{contract.hotel.name}}</h3>
+        </div>
+
+        <div *ngIf="contract.hotel.roomTypes.length==0">
+            <h3>No search results available</h3>
+        </div>
+        
+        <div *ngIf="contract.hotel.roomTypes.length>0">
+            <table mat-table [dataSource]="contract.hotel.roomTypes" class="mat-elevation-z0">
+
+                <!-- Room Type Column -->
+                <ng-container matColumnDef="roomType">
+                  <th mat-header-cell *matHeaderCellDef style="width: 25%"> Room Type </th>
+                  <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.name }} </td>
+                </ng-container>
+        
+                <!-- No of Rooms Column -->
+                <ng-container matColumnDef="noOfRooms">
+                  <th mat-header-cell *matHeaderCellDef style="width: 25%"> No of Rooms </th>
+                  <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.noOfRooms }} </td>
+                </ng-container>
+        
+                <!-- Max Adults Column -->
+                <ng-container matColumnDef="maxAdults">
+                  <th mat-header-cell *matHeaderCellDef style="width: 25%"> Max Adults </th>
+                  <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.maxAdults }} </td>
+                </ng-container>
+        
+                <!-- Price Column -->
+                <ng-container matColumnDef="price">
+                  <th mat-header-cell *matHeaderCellDef style="width: 25%"> Price </th>
+                  <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ (roomType.price * (contract.markup + 100))/100 | currency: 'Rs. '}} </td>
+                </ng-container>
+        
+                <tr mat-header-row *matHeaderRowDef="['roomType', 'noOfRooms', 'maxAdults', 'price']" class="table-header" ></tr>
+                <tr mat-row *matRowDef="let row; columns: ['roomType', 'noOfRooms', 'maxAdults', 'price']"></tr>
+            </table>
+        </div>
+
+        <br>
+
+    </div>
+    <hr class="colored-line">
+</div>

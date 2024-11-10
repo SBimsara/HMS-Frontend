@@ -1,0 +1,40 @@
+.mat-table {
+    width: 90%;
+    margin-top: 20px;
+  }
+
+.custom-delete-icon-button {
+
+}
+
+.table-row:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.inner-table {
+  width: 100%;
+}
+
+.inner-table-header {
+  background-color: #D3D3D3;
+}
+
+.inner-table-header-column {
+  background-color: #D3D3D3;
+  width: 25%;
+}
+
+.table-header-column {
+
+}
+
+
+tr.detail-row {
+  height: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}

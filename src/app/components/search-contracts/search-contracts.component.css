@@ -1,0 +1,22 @@
+mat-form-field {
+    width: 70%;
+}
+
+mat-table{
+    width: 75%;
+}
+
+.custom-color-button {
+    background-color: #2BC016;
+    color: #fff;
+}
+
+.table-header {
+    background-color: #D3D3D3;
+}
+
+.colored-line {
+    border: 2px solid #000
+    ; 
+    margin: 20px 0; 
+  }

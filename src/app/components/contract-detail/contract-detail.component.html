@@ -1,0 +1,120 @@
+<div class="text-center mt-3 text-primary">
+    <h2>{{isUpdateActive? "UPDATE CONTRACT FORM" :"ADD CONTRACT FORM"}}</h2>
+</div>
+
+<div class="container text-center">
+    <div class="add-contracts-form m-3 p-4">
+        <form action="" [formGroup]="contractDetailForm">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Hotel Name</mat-label>
+                        <input formControlName="hotelName" matInput placeholder="Hotel Name" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let item of filteredOptons" [value]="item">
+                            {{item}}
+                        </mat-option>
+                        </mat-autocomplete>
+                        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                        <mat-hint></mat-hint>
+                    </mat-form-field>
+                </div>
+    
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Markup Percentage</mat-label>
+                        <input formControlName="markup" matInput placeholder="Markup Percentage">
+                        <mat-hint>Enter percentage value</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" *ngIf="!isUpdateActive">
+                        <mat-label>Choose a Start Date</mat-label>
+                        <input formControlName="startDate" matInput [matDatepicker]="startPicker" [disabled]="isUpdateActive ? true : false">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Choose a End Date</mat-label>
+                        <input formControlName="endDate" matInput [matDatepicker]="endPicker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div formArrayName="roomTypes" *ngFor="let roomType of roomTypes.controls; let i = index">
+                <div [formGroupName]="i"class="row mb-2">
+
+                    <!-- Room Type ID when update is active -->
+                    <div class="col-md-2" *ngIf="isUpdateActive">
+                        <mat-form-field appearance="outline" >
+                          <mat-label>Room Type ID</mat-label>
+                          <input type="hidden" formControlName="roomTypeId" matInput placeholder="ID">
+                        </mat-form-field>
+                    </div>
+                    
+
+                    <div class="col-md-4">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Room Type Name</mat-label>
+                        <input formControlName="roomTypeName" matInput placeholder="Room Type Name">
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2">
+                        <mat-form-field appearance="outline">
+                          <mat-label>No of Rooms</mat-label>
+                          <input formControlName="noOfRooms" matInput type="number" min="1" placeholder="No of Rooms">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Max Adults</mat-label>
+                          <input formControlName="maxAdults" matInput type="number" min="1" placeholder="Max Adults">
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Price when update is not active -->
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Price</mat-label>
+                          <input formControlName="price" matInput placeholder="Price">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button mat-icon-button color="warn" (click)="removeRoomType(i)">
+                            <mat-icon>
+                                delete
+                            </mat-icon>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-end">
+                  <button mat-flat-button class="custom-color-button" (click)="addRoomType()">ADD ROOM TYPE</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button *ngIf="!isUpdateActive" mat-flat-button color="primary" (click)="onSubmit()" >SUBMIT</button>
+                    <button *ngIf="isUpdateActive" mat-flat-button color="primary" (click)="update()" >UPDATE</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+

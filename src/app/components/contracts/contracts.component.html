@@ -1,0 +1,95 @@
+<div class="container mt-4">
+
+  <div class="row text-end">
+    <div class="col md-12">
+      <button mat-flat-button color="primary" routerLink="/save-contracts">ADD NEW CONTRACT</button>
+    </div>
+  </div>
+  <div class="row">
+    
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" multiTemplateDataRows>
+  
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef class="table-header-column"> Contract ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hotelName">
+        <th mat-header-cell *matHeaderCellDef class="table-header-column"> Hotel Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.hotel.name}} </td>
+      </ng-container>
+
+      <!-- Nested mat-table for room types -->
+      <ng-container matColumnDef="expandedDetail">
+				<td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+					<div class="element-detail"
+						[@detailExpand]="element===expandedElement?'expanded':'collapsed'">
+
+            <table mat-table [dataSource]="element.hotel.roomTypes" class="mat-elevation-z0" class="inner-table">
+
+              <!-- Room Type Column -->
+              <ng-container matColumnDef="roomType">
+                <th mat-header-cell *matHeaderCellDef style="width: 25%"> Room Type </th>
+                <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.name }} </td>
+              </ng-container>
+      
+              <!-- No of Rooms Column -->
+              <ng-container matColumnDef="noOfRooms">
+                <th mat-header-cell *matHeaderCellDef style="width: 25%"> No of Rooms </th>
+                <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.noOfRooms }} </td>
+              </ng-container>
+      
+              <!-- Max Adults Column -->
+              <ng-container matColumnDef="maxAdults">
+                <th mat-header-cell *matHeaderCellDef style="width: 25%"> Max Adults </th>
+                <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ roomType.maxAdults }} </td>
+              </ng-container>
+      
+              <!-- Price Column -->
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef class="inner-table-header-column"> Price</th>
+                <td mat-cell *matCellDef="let roomType" style="width: 25%"> {{ (roomType.price * (element.markup + 100))/100 | currency: 'Rs. '}} </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="['roomType', 'noOfRooms', 'maxAdults', 'price']" class="inner-table-header" ></tr>
+              <tr mat-row *matRowDef="let row; columns: ['roomType', 'noOfRooms', 'maxAdults', 'price']"></tr>
+          </table>
+
+          </div>
+				</td>
+			</ng-container>
+          
+      
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef class="table-header-column"> Start Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef class="table-header-column"> End Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="table-header-column"> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          
+          <button mat-icon-button color="primary" (click)="loadContract(element.id)">
+            <mat-icon> border_color</mat-icon>
+          </button>
+          
+          <button mat-icon-button color="warn" (click)="deleteContract(element.hotel.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggle(row)" class="table-row"></tr>
+  <tr mat-row *matRowDef="let row; columns:['expandedDetail']" class="detail-row"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[7, 3, 15, 20]" showFirstLastButtons></mat-paginator>
+
+</div>
+</div>
